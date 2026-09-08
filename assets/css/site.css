@@ -1,0 +1,1089 @@
+/* =========================================================================
+   ForceSight USA — site stylesheet
+   Theme tokens mirrored 1:1 from forcesight.in (Astra + Elementor build):
+     display  : Space Grotesk 700     · #262E36
+     ui/label : Plus Jakarta Sans 600 · #262E36
+     body     : Outfit 400            · #334155
+     primary  : linear-gradient(111deg,#129DFF 18%,#37DFC9 100%)
+     dark     : linear-gradient(116.51deg,#0F172A,#1A1A2E 50%,#0F172A) r36
+     footer   : #121118
+   ========================================================================= */
+
+:root{
+  /* ink */
+  --ink:#262E36;
+  --ink-2:#334155;
+  --muted:#54595F;
+  --faint:#8A9099;
+
+  /* surfaces */
+  --canvas:#FFFFFF;
+  --tint:#F0F5FA;
+  --tint-2:#E6EFF7;
+  --tint-3:#E4F0FB;
+  --hair:#E6E8EA;
+  --hair-2:#D1D5DB;
+
+  /* brand */
+  --blue:#1A77D5;
+  --blue-ink:#045CB4;
+  --blue-2:#129DFF;
+  --teal:#37DFC9;
+  --navy:#0F172A;
+  --navy-2:#1A1A2E;
+  --footer:#121118;
+
+  /* status */
+  --emerald:#12B981;
+  --emerald-soft:#DCF6EA;
+  --amber:#EA8216;
+  --amber-soft:#FCEBD3;
+  --rose:#E23D63;
+  --rose-soft:#FDE5EC;
+
+  /* violet system — Figma xRCylASTwJjWy1s6HyDG6Z 41:6033 (o1 restyle).
+     Angles and stops are taken verbatim from the design, not approximated. */
+  --violet:#5816F1;
+  --violet-2:#5F14C6;
+  --violet-solid:#5B15DB;   /* flat fill for the secondary hero pill */
+  --violet-deep:#22025D;    /* proof-chip ground */
+  --violet-ink:#5A16E3;     /* violet type on white */
+  --lime:#92FD05;
+  --mint:#75FFC6;
+  --head:#561ABE;           /* every primary section heading */
+  --on-violet:#EDF6FF;      /* eyebrow on the violet ground */
+  --on-violet-2:#BAC0C9;    /* secondary chip copy */
+  --grad-violet:linear-gradient(154.14deg,#5816F1 23.469%,#5F14C6 91.455%);
+  --grad-lime:linear-gradient(163.94deg,#92FD05 32.043%,#75FFC6 93.109%);
+  /* --grad-violet's two stops sit ~4deg apart in hue, so it clips to a flat
+     fill on text. This ramp travels violet -> the design's accent blue, which
+     reads as a gradient at display size and still belongs to the palette. */
+  --grad-accent:linear-gradient(111deg,#5816F1 14%,#7A3BFF 55%,#3AA4FF 100%);
+
+  /* gradients */
+  --grad-cta:linear-gradient(111deg,#129DFF 18%,#37DFC9 100%);
+  --grad-cta-hover:linear-gradient(111deg,#0B8CEB 18%,#22D2BA 100%);
+  --grad-dark:linear-gradient(116.51deg,#0F172A 0%,#1A1A2E 50%,#0F172A 100%);
+  /* CFO board renders on true black inside a monitor bezel */
+  --screen:#08080A;
+  --bezel:linear-gradient(180deg,#2E2F33 0%,#1A1B1E 55%,#141517 100%);
+
+  /* geometry */
+  --r-xl:36px;
+  --r-lg:24px;
+  --r-md:16px;
+  --r-sm:12px;
+  --r-btn:8px;
+  --shadow-btn:0 1px 2px rgba(17,16,16,.10);
+  --shadow-card:0 1px 2px rgba(15,23,42,.04),0 5px 14px -8px rgba(15,23,42,.08);
+  --shadow-raise:0 2px 4px rgba(15,23,42,.04),0 12px 26px -12px rgba(15,23,42,.14);
+  --shadow-float:0 4px 10px rgba(15,23,42,.04),0 24px 48px -24px rgba(15,23,42,.18);
+  --ease:cubic-bezier(.2,.8,.2,1);
+
+  /* India uses a fluid wrapper with 60px side gutters and no max-width cap */
+  --gutter:60px;
+
+  /* vertical rhythm: every section↔section gap resolves to 2×--section-y */
+  --section-y:112px;
+  /* and one scale inside a section: block↔block, and block↔its own caption */
+  --stack:56px;
+  --stack-sm:16px;
+  /* a wider step where two full-width card blocks meet and 56 reads as cramped */
+  --stack-lg:96px;
+}
+
+/* ---------------------------------------------------------------- reset */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--canvas);
+  color:var(--ink-2);
+  font-family:'Outfit',system-ui,-apple-system,'Segoe UI',sans-serif;
+  font-size:17px;line-height:1.72;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  /* clip, not hidden: overflow-x:hidden forces overflow-y:auto, which makes
+     body a scroll container and silently disables every position:sticky on
+     the page. clip contains the same horizontal overflow without doing that. */
+  overflow-x:clip;
+}
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+::selection{background:#CFE6FA;color:var(--ink)}
+
+h1,h2,h3,h4{
+  font-family:'Space Grotesk','Outfit',sans-serif;
+  color:var(--ink);font-weight:700;letter-spacing:-.02em;line-height:1.14;
+  text-wrap:balance;
+}
+p{text-wrap:pretty}
+/* Primary section headings are set in the brand violet. The two headings on
+   dark grounds override this below by higher specificity: .principle h2 and
+   the hero's own h1 rule. */
+h2{color:var(--head)}
+h1{font-size:clamp(31px,3.45vw,47px);line-height:1.09}
+h2{font-size:clamp(30px,3.5vw,46px)}
+h3{font-size:24px;line-height:1.28}
+/* weight only — colour is set per context so <b> stays legible on dark panels */
+strong,b{font-weight:600}
+
+.wrap{width:100%;max-width:none;margin:0;padding:0 var(--gutter)}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+
+/* -------------------------------------------------------------- eyebrow */
+.eyebrow{
+  font-family:'Plus Jakarta Sans','Outfit',sans-serif;
+  font-size:20px;font-weight:700;line-height:21.5px;letter-spacing:.094em;text-transform:uppercase;
+  color:var(--blue);
+}
+.eyebrow.on-dark{color:#7FC4FF}
+.eyebrow.soft{color:var(--muted)}
+.label{
+  font-family:'Plus Jakarta Sans','Outfit',sans-serif;
+  font-size:11px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--muted);
+}
+
+/* -------------------------------------------------------------- buttons */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font-family:'Plus Jakarta Sans','Outfit',sans-serif;
+  font-size:16px;font-weight:600;line-height:1.2;
+  padding:13px 22px;border:none;border-radius:var(--r-btn);cursor:pointer;
+  transition:transform .2s var(--ease),box-shadow .2s var(--ease),background .2s var(--ease);
+}
+.btn-primary{background:var(--grad-violet);color:#fff;box-shadow:var(--shadow-btn)}
+.btn-primary:hover{background:linear-gradient(154.14deg,#4A0EDD 23.469%,#520EAF 91.455%);transform:translateY(-1px);box-shadow:0 4px 14px -4px rgba(88,22,241,.38)}
+.btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--hair-2)}
+.btn-ghost:hover{border-color:var(--head);color:var(--head)}
+.btn-soft{background:var(--tint-3);color:var(--blue);}
+.btn-soft:hover{background:#D5E9FB}
+.btn:focus-visible{outline:3px solid var(--violet);outline-offset:2px}
+.btn .ico{width:18px;height:18px;flex:none}
+
+/* ---------------------------------------------------------------- reveal */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  .board-in .screen,.board-in .flow > *,.board-in .tbl,.board-in .checks > *,.board-in .b-live i{
+    opacity:1;transform:none;transition:none
+  }
+  html{scroll-behavior:auto}
+}
+
+/* ------------------------------------------------------------------- nav */
+.site-nav{
+  position:sticky;top:0;z-index:60;background:rgba(255,255,255,.92);
+  backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);
+  border-bottom:1px solid var(--hair);
+}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:20px;height:80px;min-width:0}
+.nav-links{min-width:0}
+.brand{display:flex;align-items:center;gap:10px;flex:none}
+.brand img{width:188px;height:auto}
+.brand .region{
+  font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--head);
+  background:#EDE3FF;border-radius:5px;padding:3px 7px;align-self:center;
+}
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-links a{
+  font-family:'Outfit',sans-serif;font-size:16px;color:var(--ink);white-space:nowrap;
+  padding:10px 18px;border-radius:12px;
+  transition:color .18s var(--ease),background .18s var(--ease);
+}
+.nav-links a:hover{color:var(--head);background:#F3EEFC}
+/* active section pill, on the violet theme */
+.nav-links a.active{background:#EDE3FF;color:var(--head);font-weight:500}
+.nav-links a.active:hover{background:#E3D5FF;color:var(--head)}
+.nav-actions{display:flex;align-items:center;gap:14px;flex:none}
+.nav-actions .btn{padding:11px 18px;font-size:15px}
+.nav-toggle{display:none;background:none;border:1px solid var(--hair-2);border-radius:var(--r-btn);padding:9px 11px;cursor:pointer}
+.nav-toggle span{display:block;width:18px;height:2px;background:var(--ink);border-radius:2px}
+.nav-toggle span+span{margin-top:4px}
+
+/* --------------------------------------------------------------- section */
+section{padding:var(--section-y) 0;position:relative}
+/* section divider — hairline that fades out toward the gutters */
+section + section::before,
+section + .strip::before,
+section + .principle::before,
+.logos + section::before{
+  content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:calc(100% - 2*var(--gutter));height:1px;
+  background:linear-gradient(90deg,transparent 0%,var(--hair) 16%,var(--hair) 84%,transparent 100%);
+}
+/* the divider is uniform across every boundary; only the agents section's
+   trailing rule is suppressed because the carousel supplies its own edge */
+#agents::after{content:none}
+/* DEFAULT: plain left-aligned heading block above the section content.
+   Per-section variants are opt-in — .center (#experts) and .cp-split (#checkpoint). */
+/* Vertical flow inside a section is owned by one rule, so blocks can be added
+   or reordered without hand-tuning margins. .cta-grid is excluded because its
+   wrap IS the two-column grid, not a stack. */
+section > .wrap:not(.cta-grid) > *{margin-bottom:0}
+section > .wrap:not(.cta-grid) > * + *{margin-top:var(--stack)}
+#icp .icp-map{margin-top:var(--stack-lg)}
+.sec-head{max-width:900px;margin:0;text-align:left}
+.pr-card .sec-head{margin-bottom:var(--stack)}
+.sec-head .eyebrow{display:block}
+.sec-head h2{margin-top:18px}
+.sec-head p{color:var(--ink-2);font-size:18.5px;margin-top:22px;line-height:1.65}
+.sec-head p b,.sec-head p em{color:var(--ink)}
+
+/* opt-in: centred (used by #experts) */
+.sec-head.center{max-width:1080px;margin-inline:auto;text-align:center}
+
+/* agents header: title on 2 lines, supporting copy on 3 */
+#agents .sec-head{max-width:1220px}
+#agents .sec-head h2{font-size:clamp(28px,3.1vw,41px);max-width:940px;margin-inline:auto}
+#agents .sec-head p{max-width:1190px;margin-inline:auto}
+#experts .sec-head h2{font-size:clamp(28px,3.1vw,41px);max-width:940px;margin-inline:auto}
+#experts .sec-head p{margin-top:18px;max-width:1000px;margin-inline:auto}
+.tint{background:var(--canvas)}
+
+/* ------------------------------------------------------------------ hero */
+/* India inner-page pattern: one gradient card (r36), copy left, visual right */
+/* =========================================================================
+   HERO — Figma 41:6058 / 41:6061
+   Violet ground, white display type, the third headline line on the lime
+   gradient. Every size below is the design's own value: 47px/51.23 heading
+   at -0.94px tracking, 18.5px/31.08 body, 60px pills at a 52px radius.
+   ========================================================================= */
+/* the design insets the hero panel 20px from the viewport, not the 60px page
+   gutter every other section uses — so the wrapper is overridden here */
+.hero{padding:20px 0 0;background:var(--canvas)}
+.hero > .wrap{padding-inline:20px}
+.hero-card{
+  position:relative;border-radius:var(--r-xl);overflow:hidden;
+  background:var(--grad-violet);
+  padding:58px 44px 60px;color:#fff;
+}
+.hero-grid{display:grid;grid-template-columns:751.84fr 432.16fr;gap:80px;align-items:center}
+.hero-grid > *{min-width:0}
+.hero .eyebrow{color:var(--on-violet);font-size:12.5px;letter-spacing:.15em;line-height:21.5px}
+.hero-top h1{
+  margin-top:20px;font-size:clamp(31px,3.45vw,47px);line-height:51.23px;
+  letter-spacing:-.94px;color:#fff;
+}
+.hero-top h1 span,.hero-top h1 em{display:block}
+.hero-top h1 em{
+  font-style:normal;background:var(--grad-lime);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.lede{font-size:18.5px;color:#fff;margin:24px 0 30px;max-width:none;line-height:31.08px}
+.lede em{font-style:normal;font-weight:800;color:#fff}
+.lede b{color:#fff;font-weight:800}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.hero-cta .btn{
+  height:60px;padding:15px 26px;font-size:20px;border-radius:52px;
+  font-family:'Plus Jakarta Sans','Outfit',sans-serif;
+}
+.hero-cta .btn .ico{width:19px;height:19px}
+.hero-cta .btn-primary{background:#fff;color:var(--violet-ink);font-weight:700}
+.hero-cta .btn-primary:hover{background:#fff;box-shadow:0 6px 18px -6px rgba(0,0,0,.28)}
+.hero-cta .btn-ghost{background:var(--violet-solid);color:#fff;border:1px solid var(--hair-2);font-weight:600}
+.hero-cta .btn-ghost:hover{background:#5010C4;color:#fff;border-color:var(--hair-2)}
+.cred{display:grid;grid-template-columns:repeat(3,minmax(0,max-content));gap:8px;margin-top:26px;font-size:12.5px;color:var(--on-violet-2)}
+.cred span{
+  display:inline-flex;align-items:center;gap:9px;min-width:0;
+  justify-self:start;   /* each chip hugs its own copy, not the grid column */
+  background:var(--violet-deep);backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,.8);border-radius:999px;
+  padding:5px 12px 5px 6px;line-height:21.5px;
+}
+.cred svg{
+  width:21px;height:21px;flex:none;padding:4.5px;border-radius:50%;
+  background:rgba(255,255,255,.14);color:#fff;
+}
+.cred b{color:#fff;font-weight:600}
+
+/* ------------------------------------------------- hero engagement record */
+.sow{
+  background:#fff;border:1px solid var(--hair);border-radius:12px;
+  box-shadow:var(--shadow-float);overflow:hidden;
+}
+.sow-h{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  padding:14px 22px;background:var(--tint);color:var(--ink);
+  border-bottom:1px solid var(--hair);
+  font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-size:13px;font-weight:600;
+}
+.sow-conf{
+  font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  background:var(--tint-3);color:var(--blue);border-radius:5px;padding:4px 9px;
+}
+.sow-row{
+  display:grid;grid-template-columns:112px 1fr;gap:20px;
+  padding:9px 22px;border-top:1px solid var(--hair);font-size:12.5px;line-height:1.45;
+}
+.sow-row:first-of-type{border-top:none}
+.sow-row > span{
+  font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--muted);padding-top:3px;
+}
+.sow-row b{font-weight:500;color:var(--ink-2)}
+.sow-row b.g{color:var(--emerald);font-weight:600}
+.sow-f{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+  padding:10px 22px;background:var(--tint);border-top:1px solid var(--hair);
+  font-size:11.5px;color:var(--muted);
+}
+.sow-seal{color:var(--emerald);font-weight:600}
+.sow-ent{padding:11px 22px;border-top:1px solid var(--hair);font-size:11.5px;color:var(--muted);line-height:1.5}
+.sow-ent a{color:var(--blue);font-weight:600;text-decoration:underline;text-underline-offset:2px}
+
+/* --------------------------------------------------- logo cloud + enterprise */
+.logos{padding:var(--section-y) 0}
+.logos-head{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  text-align:center;margin-bottom:24px;
+}
+.logos-note{font-size:14px;color:var(--muted);max-width:none}
+.logo-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.logo{
+  display:inline-flex;align-items:center;gap:9px;
+  background:#fff;border:1px solid var(--hair);border-radius:10px;
+  padding:9px 14px;font-size:14px;color:var(--ink);
+  font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-weight:500;
+  box-shadow:var(--shadow-card);
+  transition:border-color .18s var(--ease),box-shadow .18s var(--ease),transform .18s var(--ease);
+}
+.logo:hover{border-color:var(--hair-2);box-shadow:var(--shadow-raise);transform:translateY(-1px)}
+.logo svg{width:20px;height:20px;flex:none}
+.logo .mark{width:20px;height:20px;flex:none;object-fit:contain}
+.logo svg.wide{width:34px;height:17px}
+.logo .wm{font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-weight:800;font-size:15px;letter-spacing:-.01em}
+.logo .wm + span{color:var(--muted);font-weight:500}
+
+/* enterprise — centred heading, no separate background band */
+.ent-block{
+  display:flex;flex-direction:column;align-items:center;gap:16px;
+  margin-top:48px;
+}
+.ent-heading{display:block;text-align:center}
+.ent-badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.ent-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:#fff;border:1px solid var(--hair);border-radius:999px;padding:7px 14px 7px 11px;
+  font-size:13.5px;color:var(--ink-2);
+}
+.ent-badge svg{width:16px;height:16px;flex:none;color:var(--blue)}
+
+/* ---------------------------------------------------------------- ledger */
+.ledger{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  background:transparent;border:none;border-radius:0;
+  box-shadow:none;margin-bottom:44px;overflow:visible;
+}
+.ledger > div{
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:10px;
+  padding:34px 22px;text-align:center;position:relative;
+}
+.ledger > div + div::before{content:none}
+.ledger b{
+  display:block;font-family:'Space Grotesk','Outfit',sans-serif;font-size:33px;font-weight:700;
+  letter-spacing:-.03em;line-height:1;
+  background:var(--grad-accent);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.ledger span{display:block;font-size:14.5px;color:var(--muted);line-height:1.55;max-width:220px}
+
+/* --------------------------------------------------------------- experts */
+.exp{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.exp > div{background:#fff;border:1px solid #5E14C5;border-radius:24px;padding:37px 33px;box-shadow:0 1px 2px rgba(38,46,54,.04)}
+.exp-ic{
+  display:grid;place-items:center;width:52px;height:52px;border-radius:14px;
+  background:#5E14C6;color:#fff;flex:none;box-shadow:none;
+}
+.exp-ic svg{width:24px;height:24px}
+.exp > div{
+  display:grid;grid-template-columns:auto 1fr;
+  grid-template-areas:"ic label" "title title" "body body";
+  gap:0 14px;align-items:center;align-content:start;
+}
+.exp > div > .exp-ic{grid-area:ic}
+.exp > div > .k{grid-area:label;display:block;margin:0}
+.exp > div > h3{grid-area:title;margin:20px 0 14px}
+.exp > div > p{grid-area:body}
+.exp h3{font-size:22px;margin-bottom:14px}
+.exp p{font-size:16.5px;color:var(--ink-2);line-height:1.7}
+
+/* ---------------------------------------------------------------------
+   Figma xRCylASTwJjWy1s6HyDG6Z node 41:6338 — measurements taken from the
+   1320x540 frame: 68px top / 58px side padding, 44px column gap, 20px/34.4
+   titles, 15.5px/25.575 body, #3AA4FF eyebrow on a flat black ground.
+   Step 4 runs to a 555px measure, and the artwork is anchored to the bottom
+   right so it stays below the third column's copy however the text wraps.
+   --------------------------------------------------------------------- */
+.own{
+  position:relative;overflow:hidden;
+  margin-top:44px;background:#000;border-radius:var(--r-xl);
+  padding:68px 58px 34px;display:grid;grid-template-columns:repeat(3,1fr);
+  gap:14px 44px;color:#fff;align-items:start;min-height:540px;
+}
+.own > div{position:relative;z-index:1}
+.own-art{
+  position:absolute;right:-10px;bottom:-44px;width:560px;height:auto;
+  pointer-events:none;z-index:0;
+}
+.own .s{
+  display:block;font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-size:11.5px;font-weight:700;
+  line-height:19.78px;letter-spacing:.13em;text-transform:uppercase;color:#3AA4FF;margin-bottom:12px;
+}
+.own b{
+  display:block;font-family:'Space Grotesk','Outfit',sans-serif;font-size:20px;font-weight:700;
+  line-height:34.4px;color:#fff;margin-bottom:10px;
+}
+.own p{font-size:15.5px;line-height:25.575px;color:#C3CBD6}
+.own > div:last-child{grid-column:1 / 3;max-width:555px;border-left:none;padding-left:0}
+.own > div:last-child b{
+  background:linear-gradient(170.67deg,#129DFF 23.47%,#37DFC9 91.46%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+
+/* ------------------------------------------------------------ checkpoint */
+/* header column on the left, the checks in one card on the right */
+.cp-split{display:grid;grid-template-columns:1.06fr .94fr;gap:56px;align-items:center}
+.cp-split .sec-head{max-width:none;margin-bottom:0}
+
+/* six separate cards, stacked */
+.cp-split .cp-list{display:grid;grid-template-columns:1fr;gap:10px}
+.cp-split .cp-list > div{
+  display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"ic txt st";
+  align-items:center;gap:14px;padding:14px 16px;
+  background:#F2F1F5;border:none;border-radius:var(--r-md);
+  box-shadow:none;
+  transition:border-color .18s var(--ease),box-shadow .18s var(--ease),transform .18s var(--ease);
+}
+.cp-split .cp-list > div:hover{
+  background:#ECEBF0;transform:translateY(-1px);
+}
+.cp-split .cp-list .ic{width:36px;height:36px;align-self:center;font-size:11.5px;border-radius:10px}
+.cp-split .cp-list .st{align-self:center}
+
+/* 3-up card grid — full-width rows stranded the status pill far right */
+.cp-list{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.cp-list > div{
+  display:grid;grid-template-columns:auto 1fr;grid-template-areas:"ic st" "txt txt";
+  gap:14px 12px;align-content:start;
+  background:#fff;border:1px solid var(--hair);border-radius:var(--r-md);padding:20px;
+  box-shadow:var(--shadow-card);
+  transition:border-color .18s var(--ease),box-shadow .18s var(--ease),transform .18s var(--ease);
+}
+.cp-list > div:hover{border-color:var(--hair-2);box-shadow:var(--shadow-raise);transform:translateY(-1px)}
+.cp-list > div > div{grid-area:txt}
+.cp-list .st{grid-area:st;justify-self:end;align-self:center}
+.cp-list .ic{
+  grid-area:ic;width:42px;height:42px;border-radius:11px;display:grid;place-items:center;
+  background:var(--tint-3);color:var(--blue);
+  font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-size:12px;font-weight:700;letter-spacing:.04em;
+}
+.cp-list b{display:block;font-family:'Space Grotesk','Outfit',sans-serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.cp-list small{display:block;color:var(--muted);font-size:13.5px;line-height:1.5}
+.st{
+  font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-size:11px;font-weight:600;
+  padding:3px 9px;border-radius:6px;white-space:nowrap;
+}
+.st.ok{background:var(--emerald-soft);color:#0B8F5D}
+.st.flag{background:var(--rose-soft);color:var(--rose)}
+.st.run{background:var(--amber-soft);color:#B96409}
+
+.tta{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.tta > div{background:#EDE3FF;border:none;border-radius:20px;padding:28px 26px;box-shadow:none}
+.tta > div{display:flex;flex-direction:column}
+.tta-ic{
+  display:grid;place-items:center;width:33px;height:33px;border-radius:10px;
+  background:#D4BDFF;color:var(--head);margin-bottom:20px;box-shadow:none;
+}
+.tta-ic svg{width:17px;height:17px}
+
+.tta b{display:block;font-family:'Space Grotesk','Outfit',sans-serif;font-size:19px;font-weight:700;color:var(--ink);margin-bottom:9px}
+.tta p{font-size:15.5px;color:var(--ink-2);line-height:1.65}
+
+/* ---- board entrance -------------------------------------------------
+   The board is the heaviest object on the page, so it arrives as one piece
+   (lift + settle) and then its contents resolve in a short stagger. Delays
+   are on the children only; the panel itself is already in place, so nothing
+   below it shifts. --------------------------------------------------- */
+.board-in .screen{
+  opacity:0;transform:translateY(34px) scale(.982);
+  transition:opacity .72s var(--ease),transform .72s var(--ease);
+}
+.board-in.in .screen{opacity:1;transform:none}
+.board-in .flow > *,
+.board-in .tbl,
+.board-in .checks > *{
+  opacity:0;transform:translateY(14px);
+  transition:opacity .5s var(--ease),transform .5s var(--ease);
+}
+.board-in.in .flow > *,
+.board-in.in .tbl,
+.board-in.in .checks > *{opacity:1;transform:none}
+.board-in.in .flow > *:nth-child(1){transition-delay:.26s}
+.board-in.in .flow > *:nth-child(2){transition-delay:.32s}
+.board-in.in .flow > *:nth-child(3){transition-delay:.38s}
+.board-in.in .flow > *:nth-child(4){transition-delay:.44s}
+.board-in.in .flow > *:nth-child(5){transition-delay:.50s}
+.board-in.in .tbl{transition-delay:.56s}
+.board-in.in .checks > *:nth-child(1){transition-delay:.66s}
+.board-in.in .checks > *:nth-child(2){transition-delay:.74s}
+/* the live pill ticks on once the board has landed */
+.board-in .b-live i{transform:scale(.4);opacity:0;transition:transform .4s var(--ease),opacity .4s var(--ease)}
+.board-in.in .b-live i{transform:none;opacity:1;transition-delay:.62s}
+
+/* ------------------------------------------------------------- CFO board */
+/* dark board in a simple frame — no monitor chrome */
+.screen{background:none;border:none;padding:0;box-shadow:none}
+.screen-stand{display:none}
+.board{
+  background:var(--screen);border-radius:var(--r-xl);padding:26px 30px 22px;color:#fff;
+  border:1px solid rgba(255,255,255,.09);
+  box-shadow:var(--shadow-float);
+  font-size:13px;line-height:1.5;
+}
+.b-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.b-head b{font-family:'Space Grotesk','Outfit',sans-serif;font-size:17px;font-weight:700;color:#fff}
+.b-head .meta{color:#96A3B4;font-size:12.5px}
+.b-live{
+  display:inline-flex;align-items:center;gap:8px;background:rgba(55,223,201,.14);color:var(--teal);
+  border-radius:999px;padding:5px 13px;font-family:'Plus Jakarta Sans','Outfit',sans-serif;
+  font-size:12px;font-weight:600;
+}
+.b-live i{width:6px;height:6px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 3px rgba(55,223,201,.2)}
+
+.flow{display:grid;grid-template-columns:1fr 28px 1fr 28px 1fr;gap:10px;align-items:stretch}
+.kpi{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:var(--r-sm);padding:14px 16px}
+.kpi .l{font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:#8B98AB}
+.kpi .v{font-family:'Space Grotesk','Outfit',sans-serif;font-size:25px;font-weight:700;letter-spacing:-.02em;margin:4px 0 2px;font-variant-numeric:tabular-nums;color:#fff}
+.kpi .s{font-size:12.5px;color:#C3CBD6;line-height:1.5}
+.kpi .s b{color:#fff}
+.kpi .bar{display:flex;gap:2px;height:5px;margin-top:10px;border-radius:3px;overflow:hidden}
+.kpi .bar i{display:block}
+.arrow{display:grid;place-items:center;color:#4C5A70;font-size:18px}
+.gapbox{font-size:12px;color:#C3CBD6;margin-top:9px;display:grid;gap:4px;font-variant-numeric:tabular-nums}
+.gapbox span{display:flex;justify-content:space-between;gap:10px}
+.gapbox .r{color:#FF8FA9}
+.gapbox .a{color:#FFB25C}
+.gapbox .g{color:var(--teal)}
+
+.tbl{margin-top:12px;border:1px solid rgba(255,255,255,.09);border-radius:var(--r-sm);overflow:hidden}
+.tbl-scroll{overflow-x:auto}
+.tr{
+  display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr 1fr 1.6fr;gap:8px;
+  padding:8px 14px;border-top:1px solid rgba(255,255,255,.07);align-items:center;
+  font-size:13px;font-variant-numeric:tabular-nums;color:#DCE3EC;min-width:620px;
+}
+.tr.h{
+  background:rgba(255,255,255,.045);border-top:none;color:#8B98AB;
+  font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+}
+.tr .n{font-weight:600;color:#fff;font-size:13.5px}
+.tr .neg{color:#FF8FA9}
+.tr .pos{color:var(--teal)}
+.chip{
+  display:inline-flex;align-items:center;gap:5px;border-radius:5px;padding:3px 9px;
+  font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-size:11px;font-weight:600;
+}
+.chip.ok{background:rgba(55,223,201,.14);color:var(--teal)}
+.chip.flag{background:rgba(226,61,99,.2);color:#FF8FA9}
+.chip.run{background:rgba(234,130,22,.2);color:#FFB25C}
+
+.checks{margin-top:12px;display:grid;grid-template-columns:1.05fr 2fr;gap:10px}
+.checks > div{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:var(--r-sm);padding:14px 16px}
+.checks .t{font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:#8B98AB;margin-bottom:8px}
+.checks .big{font-family:'Space Grotesk','Outfit',sans-serif;font-size:21px;font-weight:700;color:#fff}
+.checks .big small{font-size:12.5px;color:#C3CBD6;font-family:'Outfit',sans-serif;font-weight:400;margin-left:7px}
+.checks ul{list-style:none;display:grid;gap:7px;font-size:12.5px;color:#DCE3EC}
+.checks li{display:flex;gap:9px;align-items:flex-start;line-height:1.5}
+.checks li i{flex:none;width:7px;height:7px;border-radius:50%;margin-top:6px}
+.checks li b{color:#fff}
+.checks .ai{font-size:12px;color:#96A3B4;margin-top:9px;padding-top:9px;border-top:1px solid rgba(255,255,255,.08);line-height:1.5}
+.board-cap{font-size:13px;color:var(--muted);margin-top:var(--stack-sm);text-align:center}
+
+/* ---------------------------------------------------------------- agents */
+/* distinct LIGHT theme for this section: soft brand wash over a pale base */
+#agents{position:relative;background:var(--canvas)}
+
+
+.ag{
+  display:grid;grid-template-columns:1fr 1.2fr;gap:56px;align-items:center;
+  background:linear-gradient(168deg,#FBFCFE 0%,#F4F8FC 100%);
+  border:1px solid var(--hair);border-radius:var(--r-xl);
+  padding:48px;margin-bottom:28px;box-shadow:var(--shadow-card);
+}
+
+.ag h3{font-size:30px;margin:14px 0 16px}
+.ag p{font-size:17.5px;color:var(--ink-2);line-height:1.7}
+.runs{margin-top:26px;font-size:16px;color:var(--ink-2)}
+.runs b{
+  display:block;font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-size:11.5px;font-weight:700;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;
+}
+.runs ul{list-style:none;display:grid;gap:10px}
+.runs li{padding-left:16px;position:relative}
+.runs li::before{content:"";position:absolute;left:0;top:10px;width:6px;height:6px;border-radius:50%;background:var(--blue)}
+.sys{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.sys span{
+  font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-size:13px;font-weight:500;
+  color:var(--ink-2);background:var(--tint);border:1px solid var(--hair);border-radius:7px;padding:7px 12px;
+}
+.shot{
+  border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--hair);
+  box-shadow:var(--shadow-float);background:#fff;
+}
+.shot img{width:100%;height:auto}
+
+/* --- the 4 agent cards: pinned stage — vertical scroll drives horizontal travel */
+.agc-stage{position:relative}
+/* The window bleeds to the viewport edges so cards travel in and out past
+   the screen rather than being sliced at the content column. The inline
+   padding puts the row back on the page gutter, so at rest the first card
+   starts on the gutter and at the end of travel the last card ends on it. */
+.agc-sticky{
+  position:sticky;top:104px;overflow:hidden;
+  margin-inline:calc(50% - 50vw);padding-inline:calc(50vw - 50%);
+}
+.agc-wrap{
+  display:flex;gap:34px;padding:14px 0 30px;margin:0;
+  will-change:transform;
+}
+/* fallback / touch: a plain horizontal scroller */
+.agc-stage.no-pin .agc-sticky{position:static}
+.agc-stage.no-pin .agc-sticky{margin-inline:0;padding-inline:0}
+.agc-stage.no-pin .agc-wrap{
+  overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;
+  scrollbar-width:none;-ms-overflow-style:none;transform:none!important;
+}
+.agc-stage.no-pin .agc-wrap::-webkit-scrollbar{display:none}
+.agc-stage.no-pin .agc{scroll-snap-align:start}
+
+.agc{
+  flex:0 0 calc((100% - (2 * 34px)) / 2.5);
+  background:#fff;border:1px solid var(--hair);
+  border-radius:var(--r-xl);padding:36px 32px;display:grid;gap:24px;align-content:start;
+  box-shadow:0 6px 22px -12px rgba(15,23,42,.18),0 1px 3px rgba(15,23,42,.05);
+  transition:box-shadow .2s var(--ease),transform .2s var(--ease);
+}
+.agc-ic{
+  display:grid;place-items:center;width:46px;height:46px;border-radius:13px;
+  background:linear-gradient(150deg,#243149 0%,#0F172A 62%,#0B1220 100%);
+  color:#fff;flex:none;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 2px 6px -2px rgba(15,23,42,.35);
+}
+.agc-ic svg{width:22px;height:22px}
+/* icon left, label right, copy below spanning both */
+.agc > div:first-child{
+  display:grid;grid-template-columns:auto 1fr;
+  grid-template-areas:"ic label" "title title" "body body";
+  gap:0 14px;align-items:center;
+}
+.agc > div:first-child > .agc-ic{grid-area:ic}
+.agc > div:first-child > .eyebrow{grid-area:label;margin:0}
+.agc > div:first-child > h3{grid-area:title;margin:18px 0 12px}
+.agc > div:first-child > p{grid-area:body}
+.agc:hover{border-color:var(--hair-2);box-shadow:0 12px 30px -14px rgba(15,23,42,.26),0 1px 3px rgba(15,23,42,.05);transform:translateY(-2px)}
+.agc h3{font-size:22px;margin:12px 0 14px;color:var(--ink)}
+.agc p{font-size:16px;color:var(--ink-2);line-height:1.7}
+.agc b{
+  display:block;font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;
+}
+.agc ul{list-style:none;display:grid;gap:9px;font-size:15.5px;color:var(--ink-2)}
+.agc li{padding-left:16px;position:relative}
+.agc li::before{content:"";position:absolute;left:0;top:10px;width:6px;height:6px;border-radius:50%;background:var(--blue)}
+.agc .sys{margin-top:0}
+
+/* progress rail */
+.agc-rail{height:3px;border-radius:999px;background:var(--hair);overflow:hidden;margin-top:4px}
+.agc-rail span{display:block;height:100%;width:25%;border-radius:999px;background:var(--grad-accent);transition:transform .12s linear}
+
+.custom{
+  margin-top:56px;border:1px solid var(--hair);border-radius:var(--r-xl);padding:44px 42px;
+  display:grid;grid-template-columns:1.18fr .82fr;gap:56px;align-items:center;background:var(--tint);
+}
+.custom-ic{
+  display:grid;place-items:center;width:52px;height:52px;border-radius:14px;
+  background:var(--grad-dark);color:#fff;margin-bottom:20px;
+}
+.custom-ic svg{width:24px;height:24px}
+.custom-list{display:grid;gap:10px;justify-items:stretch}
+.custom-list li{
+  display:flex;align-items:center;gap:13px;padding:14px 22px;width:100%;
+  background:#fff;border:1px solid var(--hair);border-radius:999px;
+  font-size:16px;line-height:1.5;color:var(--ink-2);
+  transition:border-color .18s var(--ease),transform .18s var(--ease);
+}
+.custom-list li:hover{border-color:var(--hair-2);transform:translateX(2px)}
+.custom-list .ci{
+  display:grid;place-items:center;flex:none;width:26px;height:26px;border-radius:50%;
+  background:var(--tint-3);color:var(--blue);
+}
+.custom-list .ci svg{width:13px;height:13px}
+.custom-list li::before{content:none}
+.custom h3{font-size:26px;margin-bottom:16px}
+.custom p{font-size:18px;color:var(--ink-2);line-height:1.72}
+.custom ul{list-style:none}
+
+/* --------------------------------------------------------- before / after */
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:stretch}
+/* two matched panels rather than two loose stacks */
+.ba-col{
+  display:flex;flex-direction:column;
+  border:1px solid var(--hair);border-radius:var(--r-xl);
+  padding:28px;box-shadow:var(--shadow-raise);
+}
+.ba-before{background:linear-gradient(180deg,#FDF8F9 0%,#FAF1F3 100%);border-color:#F3DDE3}
+.ba-after{background:linear-gradient(180deg,#F6FBF9 0%,#EDF7F2 100%);border-color:#CFE9DC}
+.ba-tag{
+  display:inline-block;align-self:flex-start;font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-size:11.5px;font-weight:700;
+  letter-spacing:.11em;text-transform:uppercase;padding:6px 12px;border-radius:6px;margin-bottom:16px;
+}
+.ba-tag.before{background:var(--rose-soft);color:var(--rose)}
+.ba-tag.after{background:var(--emerald-soft);color:#0B8F5D}
+.ba-vis{border-radius:var(--r-lg);overflow:hidden;border:1px solid rgba(15,23,42,.07);background:#fff;box-shadow:var(--shadow-card)}
+.before-vis{background:#F5F6F8;padding:16px;display:grid;gap:12px;filter:saturate(.72)}
+.portal-row{display:flex;gap:7px;flex-wrap:wrap}
+.portal{background:#fff;border:1px solid var(--hair-2);border-radius:7px;padding:7px 10px;font-size:11.5px;line-height:1.3}
+.portal b{display:block;font-weight:600;color:var(--ink)}
+.portal i{font-style:normal;color:var(--muted);font-size:10.5px}
+.xls{background:#fff;border:1px solid var(--hair-2);border-radius:7px;overflow:hidden}
+.tabs{display:flex;gap:2px;background:#E9EBF0;padding:5px 5px 0;overflow:hidden;white-space:nowrap}
+.tabs span{
+  font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-size:10px;font-weight:500;
+  padding:5px 9px;background:#D9DCE3;border-radius:5px 5px 0 0;color:var(--muted);
+}
+.tabs span.on{background:#fff;color:var(--ink)}
+.xgrid{display:grid;grid-template-columns:1.1fr 1fr 1fr 1fr .6fr;font-size:11.5px;font-variant-numeric:tabular-nums}
+.xgrid > div{padding:7px 8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border-bottom:1px solid #EEF0F4;border-right:1px solid #EEF0F4}
+.xgrid > div.h{font-weight:600;background:#F7F8FA;color:var(--muted)}
+.xgrid .bad{color:var(--rose)}
+.mail{display:grid;gap:6px}
+.mail > div{background:#fff;border:1px solid var(--hair-2);border-left:3px solid var(--hair-2);border-radius:5px;padding:8px 10px;font-size:11.5px;color:var(--muted)}
+.mail b{color:var(--ink);font-weight:600}
+
+.after-vis{padding:14px;display:grid;gap:12px;background:#fff}
+.after-vis .shot{border-radius:var(--r-md);box-shadow:var(--shadow-raise)}
+.ai-strip{
+  display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--hair);
+  border-radius:var(--r-md);padding:13px 15px;font-size:13.5px;color:var(--ink-2);line-height:1.5;
+}
+.ai-dot{flex:none;width:10px;height:10px;border-radius:50%;background:var(--grad-violet);margin-top:6px}
+.ai-strip b{color:var(--ink)}
+
+.ba-list{
+  list-style:none;display:grid;gap:11px;margin-top:auto;padding:20px 18px 0;
+  font-size:15.5px;color:var(--ink-2);
+}
+.ba-list li{padding-left:22px;position:relative;line-height:1.5}
+.ba-list b{color:var(--ink)}
+.ba-list li::before{
+  content:"";position:absolute;left:0;top:9px;width:8px;height:8px;border-radius:2px;
+  background:var(--rose);
+}
+.ba-list.good li::before{background:var(--emerald);border-radius:50%}
+
+/* Four outcome tiles. Each reads before -> after, so the "from" value is
+   set back in muted ink and only the "to" value carries the gradient —
+   the eye lands on what changed, not on the arrow. */
+.ba-metrics{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:36px;
+}
+.ba-metrics > div{
+  position:relative;overflow:hidden;padding:24px 22px 26px;
+  background:#fff;border:1px solid var(--hair);border-radius:var(--r-lg);
+  box-shadow:0 1px 2px rgba(15,23,42,.05),0 14px 28px -22px rgba(15,23,42,.4);
+  transition:transform .22s var(--ease),box-shadow .22s var(--ease),border-color .22s var(--ease);
+}
+.ba-metrics > div:hover{
+  transform:translateY(-3px);border-color:var(--hair-2);
+  box-shadow:0 1px 2px rgba(15,23,42,.05),0 20px 34px -22px rgba(15,23,42,.5);
+}
+.ba-metrics .k{
+  display:flex;align-items:center;gap:7px;
+  font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-size:10.5px;font-weight:700;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;
+}
+.ba-metrics .k::before{
+  content:"";width:6px;height:6px;border-radius:50%;background:var(--head);flex:none;
+}
+.ba-metrics b{
+  display:flex;align-items:baseline;flex-wrap:wrap;gap:0 9px;
+  font-family:'Space Grotesk','Outfit',sans-serif;font-size:23px;
+  letter-spacing:-.02em;margin-bottom:10px;
+}
+/* before and after are set at the SAME size — only weight and colour separate
+   them, so the pair reads as one measurement changing rather than two figures */
+.ba-metrics .was{font-weight:500;color:var(--muted)}
+.ba-metrics .to{font-size:17px;font-weight:400;color:var(--hair-2);position:relative;top:-1px}
+.ba-metrics .now{font-weight:700;color:var(--head)}
+.ba-metrics small{display:block;font-size:14px;color:var(--ink-2);line-height:1.5}
+/* a caption belongs to the block above it, so it sits on the tighter step */
+section > .wrap > .note{margin-top:var(--stack-sm)}
+.note{font-size:13px;color:var(--muted);margin-top:var(--stack-sm)}
+
+/* -------------------------------------------------------------- timeline */
+/* the right column stretches so the card inside it has room to travel; the
+   card itself keeps its natural height */
+.tl-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:56px;align-items:stretch}
+.roi-col{min-width:0}
+/* heading + day steps share the left column; the ROI card holds the right */
+.tl-left{display:block}
+/* the intro pins while the day list scrolls under it; the hairline is the
+   seam between the fixed block and the moving one */
+.tl-left .sec-head{
+  position:sticky;top:80px;z-index:3;max-width:none;
+  /* opaque, and padded up to the nav's underside so nothing shows through the
+     band between the nav and the pinned block */
+  background:var(--canvas);
+  padding:24px 0 26px;margin-bottom:40px;
+  border-bottom:1px solid var(--hair);
+}
+.days{display:grid;gap:0;position:relative;z-index:1}
+.day{
+  display:grid;grid-template-columns:92px 1fr;gap:24px;align-items:start;
+  position:relative;padding-bottom:38px;
+}
+.day:last-child{padding-bottom:0}
+/* connector running from each pill down to the next */
+.day::before{
+  content:"";position:absolute;left:45px;top:84px;bottom:-6px;width:2px;
+  background:linear-gradient(180deg,var(--hair-2),var(--hair));
+}
+.day:last-child::before{display:none}
+.day .dot{
+  width:92px;min-height:78px;border-radius:var(--r-md);display:grid;place-items:center;text-align:center;
+  background:var(--grad-dark);color:#fff;
+  font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-size:14px;font-weight:700;line-height:1.35;
+}
+.day .dot br{content:"";display:block;margin-top:1px}
+.day h3{font-size:22px;margin-bottom:11px}
+.day p{font-size:16.5px;color:var(--ink-2);line-height:1.7}
+.day .val{
+  display:inline-block;margin-top:10px;font-family:'Plus Jakarta Sans','Outfit',sans-serif;
+  font-size:12.5px;font-weight:600;color:var(--blue);background:var(--tint-3);
+  border-radius:6px;padding:5px 11px;
+}
+.roi{background:#fff;border:1px solid var(--hair);border-radius:var(--r-xl);padding:36px 32px;box-shadow:var(--shadow-raise);position:sticky;top:112px}
+.roi h3{font-size:22px;margin:14px 0 20px}
+.roi table{width:100%;border-collapse:collapse;font-size:15.5px}
+.roi td{padding:17px 0;border-bottom:1px solid var(--hair);vertical-align:top;color:var(--ink-2)}
+.roi td:last-child{text-align:right;white-space:nowrap;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+.roi .strike{text-decoration:line-through;color:var(--faint);font-weight:400;margin-right:6px}
+.roi tr.tot td{
+  border-bottom:none;padding-top:18px;font-family:'Space Grotesk','Outfit',sans-serif;
+  font-size:19px;font-weight:700;color:var(--ink);
+}
+.roi tr.tot td:last-child{background:var(--grad-accent);-webkit-background-clip:text;background-clip:text;color:transparent}
+.fine{font-size:12.5px;color:var(--muted);margin-top:16px;line-height:1.5}
+
+/* ------------------------------------------------------------------- ICP */
+.icp{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.icp > div{
+  background:#fff;border:1px solid var(--hair);border-radius:var(--r-lg);padding:36px 32px;
+  display:flex;flex-direction:column;box-shadow:var(--shadow-raise);
+}
+.icp h3{font-size:22px;margin:16px 0 14px}
+.icp p{font-size:16.5px;color:var(--ink-2);line-height:1.7}
+/* three tiers, one light family — emphasis carried by accent, not by inverting one card */
+
+/* tier 1 — featured: brand edge + faint wash */
+.icp .dtc-card{
+  position:relative;overflow:hidden;
+  background:linear-gradient(180deg,#F7FBFF 0%,#FFFFFF 42%);
+  border-color:#BBD9F5;
+  box-shadow:0 0 0 3px rgba(26,119,213,.06);
+}
+.icp .dtc-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--grad-accent);
+}
+
+/* tier 3 — enterprise: richer blue surface with its own accent edge */
+.icp .ent-card{
+  position:relative;overflow:hidden;
+  background:linear-gradient(165deg,#E8F1FD 0%,#D9E8F9 55%,#CFE1F6 100%);
+  border-color:#A9CBEE;
+  box-shadow:0 0 0 3px rgba(26,119,213,.05);
+}
+.icp .ent-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,#0F172A,#1A77D5);
+}
+.icp .ent-card h3{color:var(--ink)}
+.icp .ent-card p{color:var(--ink-2)}
+.icp .ent-card .eyebrow,
+.icp .ent-card .eyebrow.on-dark{color:#0B4F96}
+.start{margin-top:auto;padding-top:26px;border-top:1px solid var(--hair);display:grid;gap:9px}
+.start > span{
+  font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+}
+.start b{font-size:16px;font-weight:600;color:var(--ink);line-height:1.55}
+.start i{font-style:normal;font-size:13px;color:var(--blue);font-weight:600}
+.ent-card .start{border-top-color:#B9D3EF}
+.ent-card .start > span{color:var(--muted)}
+.ent-card .start b{color:var(--ink)}
+.ent-card .start i{color:var(--blue-ink)}
+.dtc-card .start{border-top-color:#CFE3F7}
+
+.icp-map{
+  margin-top:20px;background:#fff;border:1px solid var(--hair);border-radius:var(--r-lg);
+  padding:28px;display:grid;grid-template-columns:.85fr 1.15fr;gap:32px;align-items:center;box-shadow:var(--shadow-card);
+}
+.icp-map h3{font-size:22px;margin-bottom:12px}
+.icp-map p{font-size:16.5px;color:var(--ink-2);line-height:1.7}
+.icp-map .shot{border-radius:var(--r-md)}
+
+/* ------------------------------------------------------------- principle */
+.principle{background:var(--canvas);padding:var(--section-y) 0}
+.principle .wrap > .pr-card{
+  background:var(--grad-dark);border-radius:var(--r-xl);padding:56px 52px;
+  box-shadow:none;
+}
+.principle h2{color:#fff}
+.principle .sec-head p{color:#C3CBD6}
+.pr-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.pr-grid > div{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-lg);padding:36px 32px}
+.pr-grid .tag{
+  display:inline-block;font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--teal);background:rgba(55,223,201,.12);
+  border-radius:6px;padding:5px 11px;margin-bottom:14px;
+}
+.pr-grid b{display:block;font-family:'Space Grotesk','Outfit',sans-serif;font-size:22px;font-weight:700;color:#fff;margin-bottom:13px}
+.pr-grid p{font-size:16.5px;color:#C3CBD6;line-height:1.7}
+
+/* ------------------------------------------------------------------ form */
+.cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.fits{display:grid;gap:16px;margin-top:34px}
+.fits > div{display:flex;gap:13px;align-items:flex-start;font-size:16.5px;color:var(--ink-2);line-height:1.6}
+.fits svg{flex:none;margin-top:5px}
+form#lead{background:#fff;border:1px solid var(--hair);border-radius:var(--r-xl);padding:30px 28px;box-shadow:var(--shadow-float)}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:grid;gap:7px;margin-bottom:15px}
+.field label{
+  font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-size:13.5px;font-weight:600;color:var(--ink);
+}
+.field input,.field select,.field textarea{
+  width:100%;background:#fff;border:1px solid var(--hair-2);border-radius:var(--r-btn);
+  padding:11px 13px;font-size:15px;color:var(--ink);
+  transition:border-color .18s var(--ease),box-shadow .18s var(--ease);
+}
+.field textarea{min-height:92px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{
+  outline:none;border-color:var(--head);box-shadow:0 0 0 3px rgba(86,26,190,.14);
+}
+.field input::placeholder,.field textarea::placeholder{color:var(--faint)}
+form#lead .btn{width:100%;margin-top:8px;padding:14px 22px;font-size:16px}
+form#lead .fine{text-align:center}
+.thanks{
+  display:none;background:#fff;border:1px solid var(--emerald);border-radius:var(--r-lg);
+  padding:44px 30px;text-align:center;box-shadow:var(--shadow-card);
+}
+.thanks h3{font-size:24px;margin-bottom:12px}
+.thanks p{color:var(--ink-2);font-size:16px}
+
+/* ---------------------------------------------------------------- footer */
+.site-footer{background:var(--footer);color:#C7C6C8;padding:0}
+.foot-top{padding:48px var(--gutter) 34px;border-bottom:1px solid rgba(255,255,255,.09)}
+.foot-brand{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px;align-items:start}
+.foot-brand > div:first-child p{font-size:14.5px;color:#9B9AA0;margin-top:16px;max-width:380px;line-height:1.6}
+.foot-brand img{width:170px;filter:brightness(0) invert(1);opacity:.95}
+.foot-col h4{
+  font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-size:12px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:#fff;margin-bottom:14px;
+}
+.foot-col ul{list-style:none;display:grid;gap:10px;font-size:14.5px}
+.foot-col a{color:#C7C6C8;transition:color .18s var(--ease)}
+.foot-col a:hover{color:#fff}
+.foot-bot{
+  padding:20px var(--gutter);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  font-size:13.5px;color:#8B8A90;
+}
+
+/* ============================================================ responsive */
+@media (max-width:1400px){
+  .nav-links .opt{display:none}
+}
+@media (max-width:1120px){
+  .nav-links a{font-size:15px;padding:9px 11px}
+  .nav-actions .btn{padding:11px 15px;font-size:14px}
+}
+@media (max-width:1024px){
+  :root{--gutter:24px}
+  .agc{flex:0 0 clamp(320px,78%,460px)}
+  .agc:last-child{margin-right:0}
+  .cp-split{grid-template-columns:1fr;gap:32px;align-items:start}
+  .cp-split .sec-head{max-width:760px;margin-bottom:0}
+}
+@media (max-width:1080px){
+  .hero-grid{grid-template-columns:1fr;gap:38px}
+  .sow{max-width:none}
+  .hero-card{padding:52px 40px 56px}
+  .ledger{grid-template-columns:repeat(3,1fr)}
+  .ledger > div + div::before{display:none}
+  .ledger > div{border-top:1px solid var(--hair);border-left:1px solid var(--hair)}
+  .ledger > div:nth-child(-n+3){border-top:none}
+  .ledger > div:nth-child(3n+1){border-left:none}
+  .own{grid-template-columns:repeat(2,1fr);gap:44px 36px;min-height:0}
+  .own > div:last-child{grid-column:auto;max-width:none}
+  .own-art{display:none}
+  .exp,.icp,.tta,.cp-list{grid-template-columns:1fr 1fr}
+  .exp > div:last-child,.icp > div:last-child{grid-column:1/-1}
+  .tta > div:last-child{grid-column:1/-1}
+  .ag,.tl-grid,.icp-map,.cta-grid{grid-template-columns:1fr;gap:32px}
+  .roi{position:static}
+  .tl-left .sec-head{margin-bottom:36px;max-width:760px}
+  .ag .shot{order:2}
+  .agc-wrap{grid-template-columns:1fr}
+  .checks{grid-template-columns:1fr}
+  .ba-metrics{grid-template-columns:1fr 1fr}
+}
+@media (max-width:900px){
+  .hero-card{padding:44px 30px 48px}
+  .nav-links{display:none}
+  .nav-links.open{
+    display:flex;flex-direction:column;align-items:flex-start;gap:4px;
+    position:absolute;top:80px;left:0;right:0;background:#fff;
+    border-bottom:1px solid var(--hair);padding:16px 28px 22px;box-shadow:0 18px 30px -22px rgba(15,23,42,.4);
+  }
+  .nav-links.open a,.nav-links.open .opt{display:block;padding:10px 0;width:100%;border-radius:0;border-bottom:1px solid var(--hair)}
+  .nav-links.open a.active{background:none;color:var(--blue)}
+  .nav-toggle{display:block}
+  .nav-actions .btn{display:none}
+  .site-nav .wrap{position:relative}
+  .flow{grid-template-columns:1fr;gap:10px}
+  .arrow{transform:rotate(90deg);height:22px}
+  .ba{grid-template-columns:1fr}
+  .custom{grid-template-columns:1fr;gap:22px}
+  .foot-brand{grid-template-columns:1fr 1fr;gap:28px}
+  .foot-brand > div:first-child{grid-column:1/-1}
+}
+@media (max-width:680px){
+  :root{--gutter:20px}
+  .cred{grid-template-columns:1fr}
+  .cred span{width:100%}
+  section{padding:56px 0}
+  .hero{padding:14px 0 4px}
+  .hero-card{padding:34px 22px 38px;border-radius:var(--r-lg)}
+  .logos{padding:36px 0 30px}
+  .logo{font-size:13px;padding:8px 12px}
+  .lede{font-size:17px}
+  .sec-head p{font-size:16px}
+  .ledger,.exp,.icp,.tta,.pr-grid,.own,.f-row,.cp-list{grid-template-columns:1fr}
+  .ledger > div{border-left:none}
+  .ledger > div:nth-child(n+2){border-top:1px solid var(--hair)}
+  .own{padding:26px 22px}
+  .screen{padding:10px 10px 12px;border-radius:16px}
+  .board{padding:18px 16px 20px}
+  .kpi .v{font-size:27px}
+  .ba-metrics{grid-template-columns:1fr}
+  .day{grid-template-columns:1fr;gap:12px}
+  .day .dot{width:auto;min-height:0;padding:10px 16px;justify-self:start}
+  .day::before{display:none}
+  .day{padding-bottom:28px}
+  .sow-row{grid-template-columns:1fr;gap:4px}
+  .foot-brand{grid-template-columns:1fr}
+  .hero-cta .btn{width:100%}
+  form#lead,.roi,.icp-map,.custom{padding:22px}
+}

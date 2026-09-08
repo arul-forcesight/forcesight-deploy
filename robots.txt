@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://arul-forcesight.github.io/forcesight-deploy/sitemap.xml
