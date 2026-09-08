@@ -286,7 +286,7 @@ section > .wrap:not(.cta-grid) > * + *{margin-top:var(--stack)}
 .hero-cta .btn-ghost{background:var(--violet-solid);color:#fff;border:1px solid var(--hair-2);font-weight:600}
 .hero-cta .btn-ghost:hover{background:#5010C4;color:#fff;border-color:var(--hair-2)}
 .cred{display:grid;grid-template-columns:repeat(3,minmax(0,max-content));gap:8px;margin-top:26px;font-size:12.5px;color:var(--on-violet-2)}
-.cred span{
+.cred > span{
   display:inline-flex;align-items:center;gap:9px;min-width:0;
   justify-self:start;   /* each chip hugs its own copy, not the grid column */
   background:var(--violet-deep);backdrop-filter:blur(6px);
@@ -298,6 +298,10 @@ section > .wrap:not(.cta-grid) > * + *{margin-top:var(--stack)}
   background:rgba(255,255,255,.14);color:#fff;
 }
 .cred b{color:#fff;font-weight:600}
+/* label and note are one flowing run inside a single flex item, so they wrap
+   as a phrase rather than splitting into two columns. display:block matters —
+   as a span it would otherwise be caught by the chip's own flex rule above. */
+.cred-t{display:block;min-width:0}
 
 /* ------------------------------------------------- hero engagement record */
 .sow{
@@ -1085,7 +1089,7 @@ form#lead .fine{text-align:center}
   .icp-map,
   .agc-rail{display:none}
   .cred{grid-template-columns:1fr}
-  .cred span{width:100%}
+  .cred > span{width:100%}
   section{padding:56px 0}
   .hero{padding:14px 0 4px}
   .hero-card{padding:34px 22px 38px;border-radius:var(--r-lg)}
@@ -1121,7 +1125,7 @@ form#lead .fine{text-align:center}
   /* a chip's label and its note are separate flex items, so at desktop size
      they break apart mid-chip. Smaller type keeps each chip on one line. */
   .cred{gap:8px;font-size:13px}
-  .cred span{padding:8px 13px 8px 8px;line-height:1.4;gap:7px}
+  .cred > span{padding:8px 13px 8px 8px;line-height:1.4;gap:7px}
   .cred svg{width:19px;height:19px;padding:4px}
   form#lead,.roi,.icp-map,.custom{padding:22px}
 }
