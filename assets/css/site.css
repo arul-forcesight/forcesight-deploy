@@ -1106,7 +1106,22 @@ form#lead .fine{text-align:center}
   .day::before{display:none}
   .day{padding-bottom:28px}
   .sow-row{grid-template-columns:1fr;gap:4px}
+  /* the record's title wraps to two lines beside the chip; stacking reads better */
+  .sow-h{flex-direction:column;align-items:flex-start;gap:8px}
   .foot-brand{grid-template-columns:1fr}
-  .hero-cta .btn{width:100%}
+  /* the pills keep the desktop 20px otherwise, which wraps every label onto a
+     second line and doubles their height */
+  .hero-cta{gap:10px;width:100%}
+  .hero-cta .btn{
+    width:100%;height:auto;min-height:54px;
+    padding:15px 20px;font-size:16.5px;line-height:1.25;
+    justify-content:center;text-align:center;
+  }
+  .hero-cta .btn .ico{width:17px;height:17px}
+  /* a chip's label and its note are separate flex items, so at desktop size
+     they break apart mid-chip. Smaller type keeps each chip on one line. */
+  .cred{gap:8px;font-size:13px}
+  .cred span{padding:8px 13px 8px 8px;line-height:1.4;gap:7px}
+  .cred svg{width:19px;height:19px;padding:4px}
   form#lead,.roi,.icp-map,.custom{padding:22px}
 }
