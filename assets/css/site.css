@@ -140,7 +140,7 @@ strong,b{font-weight:600}
 .eyebrow.soft{color:var(--muted)}
 .label{
   font-family:'Plus Jakarta Sans','Outfit',sans-serif;
-  font-size:11px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;
+  font-size:16px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
   color:var(--muted);
 }
 
@@ -340,7 +340,7 @@ section > .wrap:not(.cta-grid) > * + *{margin-top:var(--stack)}
   display:flex;flex-direction:column;align-items:center;gap:8px;
   text-align:center;margin-bottom:24px;
 }
-.logos-note{font-size:14px;color:var(--muted);max-width:none}
+.logos-note{font-size:18px;line-height:1.6;color:var(--muted);max-width:none}
 .logo-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
 .logo{
   display:inline-flex;align-items:center;gap:9px;
@@ -1041,6 +1041,12 @@ form#lead .fine{text-align:center}
 }
 @media (max-width:900px){
   .hero-card{padding:44px 30px 48px}
+  /* a pinned intro would eat most of a phone screen, so it flows normally
+     and the JS that drives its release bails out at this width too */
+  .tl-left .sec-head{position:static;background:none;border-bottom:none;padding:0;margin-bottom:32px;transform:none!important}
+  .roi{position:static}
+  /* parallax is disabled below 900 — this clears anything already written */
+  [data-parallax]{transform:none!important}
   .nav-links{display:none}
   .nav-links.open{
     display:flex;flex-direction:column;align-items:flex-start;gap:4px;
@@ -1048,7 +1054,7 @@ form#lead .fine{text-align:center}
     border-bottom:1px solid var(--hair);padding:16px 28px 22px;box-shadow:0 18px 30px -22px rgba(15,23,42,.4);
   }
   .nav-links.open a,.nav-links.open .opt{display:block;padding:10px 0;width:100%;border-radius:0;border-bottom:1px solid var(--hair)}
-  .nav-links.open a.active{background:none;color:var(--blue)}
+  .nav-links.open a.active{background:none;color:var(--head)}
   .nav-toggle{display:block}
   .nav-actions .btn{display:none}
   .site-nav .wrap{position:relative}
@@ -1060,7 +1066,24 @@ form#lead .fine{text-align:center}
   .foot-brand > div:first-child{grid-column:1/-1}
 }
 @media (max-width:680px){
-  :root{--gutter:20px}
+  :root{--gutter:20px;--section-y:56px;--stack:32px;--stack-lg:48px}
+  .hero-grid{grid-template-columns:1fr;gap:28px}
+  .hero > .wrap{padding-inline:12px}
+  h1{font-size:31px;line-height:1.14;letter-spacing:-.5px}
+  .hero-top h1{line-height:1.16}
+  .eyebrow{font-size:14px;letter-spacing:.1em}
+  .label{font-size:13px}
+  .logos-note{font-size:15px}
+  .exp > div{padding:26px 22px}
+  .exp-ic{width:44px;height:44px;border-radius:12px}
+  .exp-ic svg{width:20px;height:20px}
+  /* Content trimmed for phones: these are wide, dense illustrations that are
+     unreadable below ~700px and add significant weight. The copy around them
+     carries the same points, so nothing is lost but the picture. */
+  .board .tbl,
+  .ba-vis,
+  .icp-map,
+  .agc-rail{display:none}
   .cred{grid-template-columns:1fr}
   .cred span{width:100%}
   section{padding:56px 0}

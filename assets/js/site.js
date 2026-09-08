@@ -63,11 +63,16 @@
     function clear() {
       layers.forEach(function (el) { el.style.transform = ''; });
     }
+    // no parallax on phones: it costs scroll smoothness on exactly the devices
+    // least able to absorb it, and the layers are decorative
+    function canRun() { return !reduced.matches && window.innerWidth >= 900; }
 
     var frame = false;
+    var wasRunning = true;
     function paint() {
       frame = false;
-      if (reduced.matches) return;
+      if (!canRun()) { if (wasRunning) { clear(); wasRunning = false; } return; }
+      wasRunning = true;
       var mid = (window.innerHeight || 0) / 2;
       for (var i = 0; i < live.length; i++) {
         var el = live[i];
@@ -84,7 +89,7 @@
       window.requestAnimationFrame(paint);
     }
 
-    if (reduced.matches) clear(); else queue();
+    if (!canRun()) clear(); else queue();
     window.addEventListener('scroll', queue, { passive: true });
     window.addEventListener('resize', queue);
     if (reduced.addEventListener) {
@@ -108,7 +113,7 @@
 
     function paint() {
       frame = false;
-      if (reduced.matches) { head.style.transform = ''; return; }
+      if (reduced.matches || window.innerWidth < 900) { head.style.transform = ''; return; }
       // negative once the final card's bottom has risen above the fold; 0 while
       // it is still below, which is when the intro should stay pinned
       var slack = last.getBoundingClientRect().bottom - (window.innerHeight - 24);
