@@ -181,7 +181,7 @@ strong,b{font-weight:600}
 .nav-in{display:flex;align-items:center;justify-content:space-between;gap:20px;height:80px;min-width:0}
 .nav-links{min-width:0}
 .brand{display:flex;align-items:center;gap:10px;flex:none}
-.brand img{width:188px;height:auto}
+.brand img{width:auto;height:36px}
 .brand .region{
   font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-size:10px;font-weight:700;
   letter-spacing:.12em;text-transform:uppercase;color:var(--head);
@@ -992,7 +992,9 @@ form#lead .fine{text-align:center}
 .foot-top{padding:48px var(--gutter) 34px;border-bottom:1px solid rgba(255,255,255,.09)}
 .foot-brand{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px;align-items:start}
 .foot-brand > div:first-child p{font-size:14.5px;color:#9B9AA0;margin-top:16px;max-width:380px;line-height:1.6}
-.foot-brand img{width:170px;filter:brightness(0) invert(1);opacity:.95}
+/* the light variant already carries its own colour — no filter, or the
+   green would be flattened to white along with the wordmark */
+.foot-brand img{width:auto;height:30px;opacity:.95}
 .foot-col h4{
   font-family:'Plus Jakarta Sans','Outfit',sans-serif;font-size:12px;font-weight:700;
   letter-spacing:.12em;text-transform:uppercase;color:#fff;margin-bottom:14px;
